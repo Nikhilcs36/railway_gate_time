@@ -12,7 +12,8 @@ export const queryClient = new QueryClient({
       staleTime: 15_000,
       gcTime: 5 * 60_000,
       retry: 2,
-      refetchOnWindowFocus: true,
+      // Avoid bursts of refetches every time the tab regains focus.
+      refetchOnWindowFocus: false,
     },
   },
 });

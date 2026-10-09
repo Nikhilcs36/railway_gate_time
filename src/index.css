@@ -133,3 +133,87 @@ body {
 .info-window p {
   margin: 4px 0;
 }
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-nearme {
+  border: 1px solid #2563eb;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn-nearme:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.btn-nearme:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.nearby-hint {
+  color: #52606d;
+  font-size: 0.9rem;
+}
+
+.coord-readout {
+  font-variant-numeric: tabular-nums;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.btn-simulate {
+  background: #0f766e;
+  border-color: #0f766e;
+}
+
+.btn-simulate:hover:not(:disabled) {
+  background: #115e59;
+}
+.radius-picker {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.radius-picker__label {
+  font-size: 0.9rem;
+  color: #52606d;
+}
+
+.radius-picker__select,
+.radius-picker__input {
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: inherit;
+  border-radius: 8px;
+  padding: 7px 8px;
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.radius-picker__input {
+  width: 78px;
+}
+
+.radius-picker__select:disabled,
+.radius-picker__input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.radius-picker__unit {
+  color: #52606d;
+  font-size: 0.9rem;
+}
+

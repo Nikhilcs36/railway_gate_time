@@ -1,4 +1,4 @@
-import type { Crossing, CrossingStatus, GeoBounds, TrainReport } from '../types/crossing';
+import type { Crossing, CrossingStatus, GeoBounds, GeoPoint, TrainReport } from '../types/crossing';
 
 const BASE = '/api';
 
@@ -17,8 +17,9 @@ async function getJson<T>(path: string): Promise<T> {
   return data as T;
 }
 
-export function fetchCrossings(): Promise<Crossing[]> {
-  return getJson<Crossing[]>('/crossings');
+export function fetchCrossings(center?: GeoPoint): Promise<Crossing[]> {
+  const params = center ? `?lat=${center.lat}&lng=${center.lng}` : '';
+  return getJson<Crossing[]>(`/crossings${params}`);
 }
 
 export function fetchCrossingStatus(id: number): Promise<CrossingStatus> {

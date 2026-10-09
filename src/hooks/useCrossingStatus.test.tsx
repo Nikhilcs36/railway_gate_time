@@ -10,9 +10,13 @@ describe('useCrossingStatus', () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(result.current.data?.eta_seconds).toBe(142);
-    expect(result.current.data?.predicted_closure).toBe('22:42:00');
+    // The mock serves a live (time-based) status, so assert stable shape rather
+    // than frozen values: train is fixed, eta is a non-negative number, and the
+    // predicted times are still HH:mm:ss.
     expect(result.current.data?.train).toBe('12625');
+    expect(result.current.data?.eta_seconds).toBeGreaterThanOrEqual(0);
+    expect(result.current.data?.predicted_closure).toMatch(/^\d{2}:\d{2}:\d{2}$/);
+    expect(result.current.data?.updated_at).toBeTruthy();
   });
 
   it('does not fetch when disabled (no id)', () => {

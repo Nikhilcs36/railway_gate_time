@@ -27,6 +27,11 @@ export interface GeoBounds {
   west: number;
 }
 
+export interface GeoPoint {
+  lat: number;
+  lng: number;
+}
+
 export interface TrainReport {
   crossing: number;
   train: string;
