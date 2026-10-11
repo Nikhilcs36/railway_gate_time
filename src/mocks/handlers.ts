@@ -57,16 +57,67 @@ const GATE_NAME_POOL = [
 ];
 
 /**
+ * Real Indian Railways train numbers (verified against KSR Bengaluru &
+ * Yesvantpur origin lists, which match the Bangalore demo centre). Used to
+ * give the generated demo gates genuine train numbers instead of fabricated
+ * ones. There are more numbers here (40) than generated gates (31), so each
+ * gate gets a unique real number with no repeats.
+ */
+const REAL_TRAIN_NUMBERS: string[] = [
+  '26752', // Belagavi Vande Bharat Express
+  '22691', // Hazrat Nizamuddin Rajdhani Express
+  '12028', // MGR Chennai Central Shatabdi Express
+  '12089', // Shivamogga Town Jan Shatabdi Express
+  '12079', // SSS Hubballi Jan Shatabdi Express
+  '20653', // Belagavi SF Express
+  '12640', // Brindavan SF Express
+  '22665', // Coimbatore Uday Express
+  '20686', // Gandhidham Superfast Express
+  '20694', // Jodhpur SF Express
+  '12627', // Karnataka Express
+  '12608', // Lalbagh SF Express
+  '20624', // Malgudi SF Express
+  '12658', // MGR Chennai Central SF Mail
+  '20660', // Mysuru Rajya Rani SF Express
+  '12725', // Siddhaganga SF Express
+  '20688', // SSS Hubballi Superfast Express
+  '20651', // Talguppa InterCity Express
+  '12614', // Wodeyar SF Express
+  '16216', // Chamundi Express
+  '20661', // Dharwad Vande Bharat Express
+  '26651', // Ernakulam Jn. Vande Bharat Express
+  '20704', // Kacheguda Vande Bharat Express
+  '12213', // Delhi Sarai Rohilla AC Duronto Express
+  '12736', // Charlapalli Garib Rath Express
+  '22884', // Puri Garib Rath Express
+  '12257', // Thiruvananthapuram North Garib Rath Express
+  '22690', // Ahmedabad Weekly SF Express
+  '22685', // Chandigarh Karnataka Sampark Kranti Express
+  '12592', // Gorakhpur SF Express
+  '22534', // Gorakhpur SF Express
+  '22679', // Hassan InterCity SF Express
+  '22832', // Howrah Superfast Express
+  '12193', // Jabalpur SF Express
+  '12629', // Karnataka Sampark Kranti Express
+  '20667', // Khatipura SF Express
+  '22683', // Lucknow SF Express
+  '12291', // MGR Chennai Central Weekly SF Express
+  '20689', // Shivamogga Town Intercity SF Express
+  '20655', // SSS Hubballi Weekly SF Express
+  '12251', // Wainganga SF Express
+];
+
+/**
  * Train numbers keyed by crossing id. The two fixed demo gates keep their
  * historical numbers; every generated gate (id 1..DEMO_GATE_COUNT) gets a
- * deterministic number so its status endpoint resolves (no 404 markers).
+ * deterministic real number so its status endpoint resolves (no 404 markers).
  */
 const TRAINS: Record<number, string> = {
-  123: '12625',
-  200: '17644',
+  123: '12625', // Kerala Express
+  200: '17644', // Circar Express
 };
 for (let id = 1; id <= DEMO_GATE_COUNT; id += 1) {
-  TRAINS[id] = `11${String(id).padStart(3, '0')}`;
+  TRAINS[id] = REAL_TRAIN_NUMBERS[(id - 1) % REAL_TRAIN_NUMBERS.length];
 }
 
 /** Milliseconds → "HH:mm:ss" (same shape as the original payload). */
