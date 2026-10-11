@@ -29,9 +29,6 @@ export default function App() {
     error: geoError,
     loading: geoLoading,
     refresh,
-    simulate,
-    simulating,
-    hasLiveFix,
   } = useGeolocation();
 
   // Search radius: toolbar presets (5 / 10 / 15 km) plus a custom value.
@@ -146,16 +143,10 @@ export default function App() {
           )}
         </div>
 
-        {import.meta.env.DEV && (
-          <button type="button" className="btn-nearme btn-simulate" onClick={simulate}>
-            {simulating ? '⏸ Stop simulation' : '▶ Simulate movement'}
-          </button>
-        )}
         {coords ? (
           <span className="nearby-hint coord-readout" data-testid="coord-readout">
             📍 {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)} · updated{' '}
             {updatedAt ? updatedAt.toLocaleTimeString() : '—'}
-            {simulating && !hasLiveFix && ' · simulated'}
           </span>
         ) : (
           !geoError && (
@@ -183,18 +174,6 @@ export default function App() {
           permission (the 📍 icon in the address bar), make sure you are on{' '}
           <code>localhost</code> or <code>https://</code>, and that OS location services are
           enabled. Then click &quot;Near me ({radiusKm} km)&quot; to retry.
-        </p>
-      )}
-      {simulating && !hasLiveFix && (
-        <p className="banner" data-testid="geo-sim-banner">
-          🧪 Movement simulation is ON — coordinates are a fake demo point, not your live location.
-          Click &quot;⏸ Stop simulation&quot; to use real GPS.
-        </p>
-      )}
-      {simulating && hasLiveFix && (
-        <p className="banner" data-testid="geo-sim-ignored-banner">
-          🧪 Movement simulation is ON but ignored — a real GPS fix is active, so the live location
-          keeps winning.
         </p>
       )}
 
