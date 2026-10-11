@@ -60,11 +60,7 @@ body {
 }
 
 .crossing-list {
-  list-style: none;
   margin: 16px 0 0;
-  padding: 0;
-  display: grid;
-  gap: 8px;
 }
 
 .crossing-list__empty {
@@ -72,26 +68,73 @@ body {
   padding: 8px;
 }
 
+.crossing-summary {
+  margin: 0 0 8px;
+  color: #52606d;
+  font-size: 0.9rem;
+}
+
+.crossing-list__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
 .crossing-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  flex-direction: column;
+  gap: 6px;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
   padding: 10px 14px;
 }
 
+.crossing-row--passing {
+  border-color: #f59e0b;
+  box-shadow: inset 3px 0 0 #f59e0b;
+}
+
 .row-main {
   display: flex;
   align-items: center;
   gap: 10px;
-  border: none;
-  background: transparent;
-  font: inherit;
-  cursor: pointer;
-  padding: 0;
+}
+
+.badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.row-detail {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  color: #52606d;
+}
+
+.train {
+  font-weight: 600;
+  color: #1f2933;
+}
+
+.train--none {
+  font-weight: 500;
+  color: #52606d;
+}
+
+.times {
+  font-variant-numeric: tabular-nums;
+}
+
+.row-detail .btn-report {
+  margin-left: auto;
 }
 
 .dot {
@@ -216,4 +259,5 @@ body {
   color: #52606d;
   font-size: 0.9rem;
 }
+
 

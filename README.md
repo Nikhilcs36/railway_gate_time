@@ -10,6 +10,9 @@ when the gate is expected to close and reopen.
 
 - **Live status per gate** — approaching train, distance in km, ETA, predicted
   closure/opening times and a confidence score.
+- **Unified gate list** — each gate is one row combining its gate status (dot +
+  label) with the train passing at it (number, ETA, closure/opening times);
+  gates with a train currently passing are sorted to the top.
 - **Colour-coded markers** — green = open, amber = closing soon, red = closed.
 - **Countdown timers** — live countdown to the next closure on every gate.
 - **"Near me" geolocation search** — gates around your live GPS position, with 5 / 10 /
