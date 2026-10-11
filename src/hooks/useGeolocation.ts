@@ -8,11 +8,6 @@ interface UseGeolocationResult {
   error: string | null;
   loading: boolean;
   refresh: () => void;
-  /** Toggle a dev-only fake GPS that emits movement ticks (no hardware needed). */
-  simulate: () => void;
-  simulating: boolean;
-  /** True once a real browser GPS fix has arrived (never true from the simulator). */
-  hasLiveFix: boolean;
 }
 
 const WATCH_OPTIONS: PositionOptions = {
@@ -20,10 +15,6 @@ const WATCH_OPTIONS: PositionOptions = {
   timeout: 10_000,
   maximumAge: 5_000,
 };
-
-const SIM_INTERVAL_MS = 2_000;
-const SIM_BASE: GeoPoint = { lat: 12.9716, lng: 77.5946 };
-const SIM_RADIUS_DEG = 0.012; // ≈ 1.3 km — crosses the pan threshold each tick
 
 /**
  * Browser geolocation with LIVE updates.
@@ -34,30 +25,16 @@ const SIM_RADIUS_DEG = 0.012; // ≈ 1.3 km — crosses the pan threshold each t
  *   immediately, then the watch keeps it fresh.
  * - `refresh()` re-runs the one-shot fix (e.g. when the user clicks
  *   "Near me") without tearing down the ongoing watch.
- * - `simulate()` toggles a fake GPS (desktops have no GPS hardware, so
- *   watchPosition often fires exactly once and never again) that walks a
- *   small circle around a demo point — driving the exact same downstream
- *   pipeline (blue dot, radius circle, gate regeneration, map pan).
- *   Simulator ticks are ignored once a REAL fix has arrived, so the demo
- *   point can never mask the user's actual live location.
- * - Cleans up the watch id and simulator on unmount.
+ * - Cleans up the watch id on unmount.
  */
 export function useGeolocation(): UseGeolocationResult {
   const [coords, setCoords] = useState<GeoPoint | null>(null);
   const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [simulating, setSimulating] = useState(false);
-  const [hasLiveFix, setHasLiveFix] = useState(false);
   const watchIdRef = useRef<number | null>(null);
-  const simTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const simStepRef = useRef(0);
-  // Read inside the interval callback without re-creating it on every fix.
-  const hasLiveFixRef = useRef(false);
 
   const handleSuccess = useCallback((pos: GeolocationPosition) => {
-    hasLiveFixRef.current = true;
-    setHasLiveFix(true);
     setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
     setUpdatedAt(new Date());
     setError(null);
@@ -107,39 +84,5 @@ export function useGeolocation(): UseGeolocationResult {
     locate();
   }, [locate]);
 
-  const stopSimulate = useCallback(() => {
-    if (simTimerRef.current !== null) {
-      clearInterval(simTimerRef.current);
-      simTimerRef.current = null;
-    }
-    setSimulating(false);
-  }, []);
-
-  const simulate = useCallback(() => {
-    if (simTimerRef.current !== null) {
-      stopSimulate();
-      return;
-    }
-    setSimulating(true);
-    simTimerRef.current = setInterval(() => {
-      // Never let the demo point override a real browser fix — the whole
-      // reason the simulator exists is "no GPS hardware", which no longer
-      // applies once hasLiveFix is true.
-      if (hasLiveFixRef.current) return;
-      simStepRef.current += 1;
-      const angle = simStepRef.current * (Math.PI / 6); // 30° per tick
-      setCoords({
-        lat: +(SIM_BASE.lat + SIM_RADIUS_DEG * Math.sin(angle)).toFixed(6),
-        lng: +(SIM_BASE.lng + SIM_RADIUS_DEG * Math.cos(angle)).toFixed(6),
-      });
-      setUpdatedAt(new Date());
-      setError(null);
-      setLoading(false);
-    }, SIM_INTERVAL_MS);
-  }, [stopSimulate]);
-
-  // Stop the simulator on unmount.
-  useEffect(() => stopSimulate, [stopSimulate]);
-
-  return { coords, updatedAt, error, loading, refresh: locate, simulate, simulating, hasLiveFix };
+  return { coords, updatedAt, error, loading, refresh: locate };
 }

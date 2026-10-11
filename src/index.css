@@ -215,14 +215,6 @@ body {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
-.btn-simulate {
-  background: #0f766e;
-  border-color: #0f766e;
-}
-
-.btn-simulate:hover:not(:disabled) {
-  background: #115e59;
-}
 .radius-picker {
   display: flex;
   align-items: center;
